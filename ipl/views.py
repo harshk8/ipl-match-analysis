@@ -5,8 +5,8 @@ from django.views.generic import ListView, View
 from django.views import View
 
 
-m_df = pd.read_csv('../matches.csv')
-d_df = pd.read_csv('../deliveries.csv')
+m_df = pd.read_csv('ipl_analysis/matches.csv')
+d_df = pd.read_csv('ipl_analysis/deliveries.csv')
 
 
 class Index(View):
