@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>IPL Cricket</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<style>
+h5{
+    font-weight: bold;
+}
+</style>
+
+<body>
+<nav class="navbar navbar-expand-sm bg-dark">
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="."> ICON </a>
+        </li>
+
+        <li class="nav-item">
+            <div class="dropdown">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    Select IPL Season
+                </button>
+                <div class="dropdown-menu">
+                    {% for season in seasons %}
+                        <a class="dropdown-item" href="{% url 'ipl:ipl-match-stats' season %}"> {{ season }} </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </li>
+    </ul>
+</nav>
+
+<br>
+
+<div class="container">
+    {% if is_season %}
+    <h3 class="text-center">IPL Match Stats</h3>
+    <br>
+    <div>
+        <div>
+            <h5>Top 4 teams in terms of wins </h5>
+            <ul>
+                {% for team in top_four_teams %}
+                    <li>
+                       <span>{{ team }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div><hr>
+
+        <div>
+            <h5>Which team won the most number of tosses in the season</h5><br>
+            <span>{{top_toss_winner}}</span>
+        </div><hr>
+        
+        <div>
+            <h5>Which player won the maximum number of Player of the Match awards in the whole season</h5><br>
+            <span>{{top_player_of_match}}</span>
+        </div><hr>
+
+        <div>
+            <h5>Which team won max matches in the whole season</h5><br>
+            <span>{{team_won_max_matches}}</span>
+        </div><hr>
+
+        
+        <div>
+            <h5>Which location has the most number of wins for the top team</h5><br>
+            <span>{{max_played_location}}</span>
+        </div><hr>
+
+        <div>
+            <h5>Which % of teams decided to bat when they won the toss</h5><br>
+            <span>{{percentage_of_toss_winner_bat_first|floatformat:2}}</span>
+        </div><hr>
+
+        <div class="win_loss_percent">
+            <h5>Which location hosted most number of matches and win % and loss % for the season</h5><br>
+            <ul style="list-style: none; border:1px solid black">
+                <br>
+                <li class="row">
+                    <div class='col-md-4 font-weight-bold'>  Team Name  </div>
+                    <div class='col-md-4 font-weight-bold'>   Winning Percent  </div>
+                    <div class='col-md-4 font-weight-bold'>   Loss Percent  </div>
+                </li>
+                <hr>
+                {% for data in win_loss_per  %}
+                <li class="row">
+                    <div class='col-md-4'> {{ data.team }}  </div>
+                    <div class='col-md-4'> {{ data.win|floatformat:2 }}  </div>
+                    <div class='col-md-4'> {{ data.loss|floatformat:2 }}  </div>
+                </li>
+                <hr>
+                {% endfor %}
+            </ul>
+        </div>
+        <hr>
+
+        <div>
+            <h5>Which team won by the highest margin of runs  for the season</h5>
+            <br>
+            <div >
+            <span> Team <strong>{{ run_margin.0.0 }} </strong> won by <strong> {{ run_margin.0.1 }} </strong> </span>            
+            </div>
+        </div>
+        <br>
+        <br>
+
+        <div class="row">
+            <h2 class="font-weight-bold"># Additional filters </h2>
+        </div>
+        <br>
+        <div>
+            <h5>Which team won by the highest number of wickets for the season</h5>
+            <br>
+            <div>Team <strong>{{team_won_high_num.name}} </strong> won by max wicket <strong>{{team_won_high_num.win_by_wickets}} </strong> </div>
+        </div>
+        <hr>
+
+        <div>
+            <h5>How many times has a team won the toss and the match</h5>
+            <br>
+            <div>
+                <ul style="list-style: none; border:1px solid black; ">
+                    <br>
+                    <li class="row">
+                        <div class="col-md-6 font-weight-bold"> Team Name </div> 
+                        <div class="col-md-6 font-weight-bold"> Win toss and match both </div>
+                    </li>
+                    <hr>
+                {% for key, val in team_win_toss_and_match.items %}
+                    <li class="row">
+                        <div class="col-md-6"> {{key}} </div> 
+                        <div class="col-md-6"> {{val}} </div>
+                    </li>
+                    <hr>
+                {% endfor %}
+                </ul>
+             </div>
+        </div>
+        <hr>
+    </div>
+
+    {% else %}
+          <h3 class='text-center'>Please Select season from above given dropdown</h3>
+    {% endif %}
+    
+
+</div>
+
+</body>
+</html>
