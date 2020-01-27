@@ -1,0 +1,1 @@
+web: gunicorn ipl_analysis.wsgi --log-file -
